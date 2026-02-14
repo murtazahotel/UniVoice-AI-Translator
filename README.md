@@ -2,8 +2,10 @@
 
 🚀 Hack2Skill – AI Bharat Powered by AWS Submission  
 👥 Team Name: NYXEL  
-👨‍💻 Team Leader: Murtaza Hotelwala  
-
+👨‍💻 Team Leader: Murtaza Hotelwala 
+- Member 2 Snehal Jadhav – Backend Developer
+- Member 3 Vaibhavi Bulbule – AI/ML Engineer
+- Member 4 Utkarsh Kumar – UI/UX Developer
 ---
 
 ## 🌍 Problem Statement
