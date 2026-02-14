@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass univoice-dev
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Audio Ingress Service
+  audio-ingress:
+    build:
+      context: .
+      dockerfile: services/audio_ingress/Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      - AWS_REGION=us-east-1
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SERVICE_NAME=audio-ingress
+    depends_on:
+      - redis
+    volumes:
+      - ./src:/app/src
+
+  # Speech-to-Text Service
+  speech-to-text:
+    build:
+      context: .
+      dockerfile: services/speech_to_text/Dockerfile
+    ports:
+      - "8002:8000"
+    environment:
+      - AWS_REGION=us-east-1
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+      - REDIS_HOST=redis
+      - SERVICE_NAME=speech-to-text
+    depends_on:
+      - redis
+    volumes:
+      - ./src:/app/src
+
+volumes:
+  redis-data:
